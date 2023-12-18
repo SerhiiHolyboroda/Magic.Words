@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Magic.Words.Core.Models;
-namespace Magic.Words.Infrastructure.Data {
+namespace Magic.Words.Core.Data {
     public class ApplicationDbContext : DbContext {
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {

@@ -13,6 +13,17 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.3.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Magic.Words.Core\Magic.Words.Core.csproj" />
+    <ProjectReference Include="..\Magic.Words.Infrastructure\Magic.Words.Infrastructure.csproj" />
+    <ProjectReference Include="..\Magic.Words.Shared\Magic.Words.Shared.csproj" />
+    <ProjectReference Include="..\Magic.Words\Magic.Words.Web.csproj" />
   </ItemGroup>
 
 </Project>
