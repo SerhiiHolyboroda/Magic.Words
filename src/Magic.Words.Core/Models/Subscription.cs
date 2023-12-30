@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Magic.Words.Core.Models {
     public class Subscription {
-        [Key]
+    //    [Key]
         public int SubscriptionId { get; set; }
-        [Required]
+    //    [Required]
         public string SubscriptionName { get; set; }
         public decimal SubscriptionPrice { get; set; }
 

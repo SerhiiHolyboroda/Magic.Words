@@ -1,60 +1,62 @@
 ﻿@model List<Subscription>
 
-<div class="card shadow border-0 at-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2"> Subscription</h2>
+<div class="container mt-4">
+    <div class="card shadow border-0">
+        <div class="card-header bg-secondary bg-gradient text-white py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2>Subscription</h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <div class="row mb-3">
+                <div class="col-6"></div>
+                <div class="col-6 text-end">
+                    <a asp-controller="Subscription" asp-action="Create" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Create New
+                    </a>
+                    <a asp-controller="Subscription" asp-action="Cart" class="btn btn-info ms-2">
+                        <i class="bi bi-cart"></i> View Cart
+                    </a>
+                </div>
+            </div>
 
-            </div>
-        </div>
-    </div>
-    <div class="card-body p-4">
-        <div class="row">
-            <div class="col-6"></div>
-            <div class="col-6 text-end">
-                <a asp-controller="Subscription" asp-action="Create" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Create New
-                </a>
-            </div>
-        </div>
-        <h1>Subscription List</h1>
-        <table class="table table-bordered table striped">
-            <thead>
-                <tr>
-                    <th>
-                        Subscription Name
-                    </th>
-                    <th>
-                        Subscription Order
-                    </th>
-                    <th>Edit Subscription</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var obj in Model.OrderBy(u => u.SubscriptionId))
-                {
+            <h1>Subscription List</h1>
+            <table class="table table-bordered table-striped">
+                <thead>
                     <tr>
-                        <td>@obj.SubscriptionName</td>
-                        <td>@obj.SubscriptionId</td>
-                        <td>
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-controller="Subscription" asp-action="Edit" asp-route-id="@obj.SubscriptionId" class="btn btn-primary mx-2">
-
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <a asp-controller="Subscription" asp-action="Delete" asp-route-id="@obj.SubscriptionId" class="btn btn-danger mx-2">
-
-                                    <i class="bi bi-trash-fill"></i> Delete
-                                </a>
-                            </div>
-                        </td>
+                        <th>Subscription Name</th>
+                        <th>Subscription Order</th>
+                        <th>Action</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var obj in Model.OrderBy(u => u.SubscriptionId))
+                    {
+                        <tr>
+                            <td>@obj.SubscriptionName</td>
+                            <td>@obj.SubscriptionId</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <a asp-controller="Subscription" asp-action="Edit" asp-route-id="@obj.SubscriptionId" class="btn btn-primary me-2">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <form asp-controller="Subscription" asp-action="AddToCart" method="post">
+                                        <input type="hidden" name="id" value="@obj.SubscriptionId" />
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="bi bi-cart-plus"></i> Add to Cart
+                                        </button>
+                                    </form>
+                                    <a asp-controller="Subscription" asp-action="Delete" asp-route-id="@obj.SubscriptionId" class="btn btn-danger ms-2">
+                                        <i class="bi bi-trash-fill"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-
-
- 

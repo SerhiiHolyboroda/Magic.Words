@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Magic.Words.Core.Repositories {
     public interface IUnitOfWork {
         ISubscriptionRepository SubscriptionRepository { get; }
+        IShoppingCartRepository ShoppingCartRepository { get; }
         void Save();
     }
 }
