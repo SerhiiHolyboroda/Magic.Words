@@ -1,5 +1,6 @@
 ﻿using Magic.Words.Core.Models;
 using Magic.Words.Core.Repositories;
+using Magic.Words.Core.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Magic.Words.Web.Controllers {
@@ -33,7 +34,32 @@ namespace Magic.Words.Web.Controllers {
             return View();
 
         }
+        public IActionResult Details(int subscriptionId) {
+            /*   ShoppingCart cart = new()
+               {
+                   Subscription = _unitOfWork.SubscriptionRepository.Get(u => u.SubscriptionId == subscriptionId, includeProperties: "Subscription"),
+                   Count = 1,
+                   SubscriptionId = subscriptionId
+               };
 
+               return View(cart); */
+            {
+                // Use lambda expression for include
+                Subscription subscription = _unitOfWork.SubscriptionRepository.Get(
+                    u => u.SubscriptionId == subscriptionId
+                );
+
+                ShoppingCart cart = new ShoppingCart
+                {
+                    Subscription = subscription,
+                    Count = 1,
+                    SubscriptionId = subscriptionId
+                };
+
+                return View(cart);
+            }
+        }
+    
         public IActionResult Edit(int? id) {
             if (id == null || id == 0)
             {

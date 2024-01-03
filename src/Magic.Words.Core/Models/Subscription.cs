@@ -6,8 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Magic.Words.Core.Models {
-    public class Subscription {
+    public class Subscription //: Product
+        {
     //    [Key]
+
+
         public int SubscriptionId { get; set; }
     //    [Required]
         public string SubscriptionName { get; set; }

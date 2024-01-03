@@ -15,9 +15,11 @@ namespace Magic.Words.Core.Repository {
        
         public ISubscriptionRepository SubscriptionRepository { get; private set; }
         public IShoppingCartRepository ShoppingCartRepository { get; private set; }
+        public IApplicationUserRepository ApplicationUserRepository { get; private set; }
         public UnitOfWork(ApplicationDbContext db) {
             _db = db;
             SubscriptionRepository = new SubscriptionRepository(_db);
+            ApplicationUserRepository = new ApplicationUserRepository(_db);
             ShoppingCartRepository = new ShoppingCartRepository(_db);
         }
 

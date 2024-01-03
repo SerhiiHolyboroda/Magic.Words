@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Magic.Words.Core.Models {
     public class ApplicationUser : IdentityUser {
-        public int Name { get; set; }
+     //   public string Name { get; set; }
 
-
+     //   public string Username { get; set; }
     }
 }

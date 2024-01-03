@@ -8,10 +8,15 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Identity\Data\**" />
+    <Compile Remove="scripts\**" />
     <Content Remove="Areas\Identity\Data\**" />
+    <Content Remove="scripts\**" />
     <EmbeddedResource Remove="Areas\Identity\Data\**" />
+    <EmbeddedResource Remove="scripts\**" />
     <None Remove="Areas\Identity\Data\**" />
+    <None Remove="scripts\**" />
     <TypeScriptCompile Remove="Areas\Identity\Data\**" />
+    <TypeScriptCompile Remove="scripts\**" />
   </ItemGroup>
 
  
@@ -39,10 +44,6 @@
     <ProjectReference Include="..\Magic.Words.Core\Magic.Words.Core.csproj" />
     <ProjectReference Include="..\Magic.Words.Infrastructure\Magic.Words.Infrastructure.csproj" />
     <ProjectReference Include="..\Magic.Words.Shared\Magic.Words.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="scripts\" />
   </ItemGroup>
 
 </Project>

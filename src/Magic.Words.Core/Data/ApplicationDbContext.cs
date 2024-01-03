@@ -19,9 +19,12 @@ namespace Magic.Words.Core.Data {
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
-             base.OnModelCreating(modelBuilder);  
+    //    public DbSet<Product> Products { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+           
+
+            base.OnModelCreating(modelBuilder);  
 
             modelBuilder.ApplyConfiguration(new SubscriptionConfiguration());
  

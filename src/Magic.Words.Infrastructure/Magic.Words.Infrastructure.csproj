@@ -24,8 +24,4 @@
     <ProjectReference Include="..\Magic.Words.Core\Magic.Words.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

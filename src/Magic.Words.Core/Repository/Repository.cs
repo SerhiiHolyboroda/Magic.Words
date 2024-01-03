@@ -24,13 +24,20 @@ namespace Magic.Words.Core.Repository {
             dbSet.Add(entity);
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter) {
+        public T GetFirstOrDefault(Expression<Func<T, bool>>? filter) {
             IQueryable<T> query = dbSet;
-            query = query.Where(filter);
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             return query.FirstOrDefault();
         }
-        public IEnumerable<T> GetAll(string? includeProperties = null) {
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null) {
             IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProp in includeProperties

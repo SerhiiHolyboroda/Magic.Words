@@ -9,6 +9,7 @@ namespace Magic.Words.Core.Repositories {
     public interface IUnitOfWork {
         ISubscriptionRepository SubscriptionRepository { get; }
         IShoppingCartRepository ShoppingCartRepository { get; }
+        IApplicationUserRepository ApplicationUserRepository { get; }
         void Save();
     }
 }
