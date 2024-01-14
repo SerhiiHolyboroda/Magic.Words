@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Magic.Words.Core.IRepository {
-    public interface ISubscriptionRepository : IRepository<Subscription> {
-     //   void Save();
+    public interface IOrderDetailRepository : IRepository<OrderDetail> {
+        void Update(OrderDetail obj);
     }
 }

@@ -9,20 +9,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Magic.Words.Core.Repository {
-    internal class SubscriptionRepository : Repository<Subscription> , ISubscriptionRepository {
+    internal class OrderDetailRepository : Repository<OrderDetail> , IOrderDetailRepository {
         private ApplicationDbContext _db;
-        public SubscriptionRepository(ApplicationDbContext db) : base(db) {
+        public OrderDetailRepository(ApplicationDbContext db) : base(db) {
             _db = db;
         }
 
         
 
-        public void Save() {
-            _db.SaveChanges();
-        }
+       
 
-        public void Update(Subscription entity) {
-            throw new NotImplementedException();
+        public void Update(OrderDetail entity) {
+           _db.OrderDetails.Update(entity);
         }
     }
 }

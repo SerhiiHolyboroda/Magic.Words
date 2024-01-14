@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magic.Words.Core.IRepository {
-    public interface ISubscriptionRepository : IRepository<Subscription> {
-     //   void Save();
+namespace Magic.Words.Core.ViewModels {
+    public class OrderVM {
+        public IEnumerable<OrderDetail> OrderDetail { get; set; }
     }
 }

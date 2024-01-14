@@ -14,7 +14,7 @@ namespace Magic.Words.Core.Repository {
     public class Repository<T> : IRepository<T> where T : class {
         
         private readonly ApplicationDbContext _db;
-        internal DbSet<T> dbSet;
+        protected DbSet<T> dbSet;
         public Repository(ApplicationDbContext db) {
             _db = db;
             this.dbSet = _db.Set<T>();
@@ -24,7 +24,7 @@ namespace Magic.Words.Core.Repository {
             dbSet.Add(entity);
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>>? filter) {
+    /* delete it latter   public T GetFirstOrDefault(Expression<Func<T, bool>>? filter) {
             IQueryable<T> query = dbSet;
             if (filter != null)
             {
@@ -32,7 +32,9 @@ namespace Magic.Words.Core.Repository {
             }
             return query.FirstOrDefault();
         }
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null) {
+    */
+
+        public IReadOnlyList<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null) {
             IQueryable<T> query = dbSet;
             if (filter != null)
             {
