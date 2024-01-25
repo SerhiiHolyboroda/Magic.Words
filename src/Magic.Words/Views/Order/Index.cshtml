@@ -1,5 +1,93 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Magic.Words.Core.ViewModels
+@model List<OrderVM>
+
 @{
+    var status = Context.Request.Query["status"];
+    var pending = "text-primary";
+    var inprocess = "text-primary";
+    var comleted = "text-primary";
+    var approved = "text-primary";
+    var all = "text-primary";
+    switch(status)
+    {
+        case "pending":
+            pending = "active text-white bg-primary";
+            break;
+        case "inprocess":
+            pending = "active text-white bg-primary";
+            break;
+        case "comleted":
+            pending = "active text-white bg-primary";
+            break;
+        case "approved":
+            pending = "active text-white bg-primary";
+            break;
+        case "all":
+            pending = "active text-white bg-primary";
+            break;
+ 
+    }
 }
+
+<h2>Order List</h2>
+<div class="card-body p-4">
+
+    <div class="d-flex justify-content-between pb-5 pt-2">
+        <span>
+
+        </span>
+
+        <ul class="list-group list-group-horizontal-sm">
+            <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="inprocess">
+            <li class="list-group-item" @pending>In Process</li>
+            </a>
+        <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="pending">
+            <li class="list-group-item" @pending>Payment Pending</li>
+            </a>
+        <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="compeleted">
+            <li class="list-group-item" @comleted>Comleted</li>
+            </a>
+        <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="approved">
+            <li class="list-group-item" @approved>Approved</li>
+            </a>
+        <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">
+            <li class="list-group-item" @all>All</li>
+            </a>
+        </ul>
+       
+    </div>
+</div>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Subscription</th>
+            <th>Count</th>
+            <th>Status</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var orderVM in Model)
+        {
+            <tr>
+                <td>@orderVM.OrderHeader.Id</td> 
+                <td>
+                    @if (orderVM.OrderDetail != null && orderVM.OrderDetail.Any())
+                    {
+                        @*        @orderVM.OrderDetail.First().Subscription.SubscriptionName *@
+                }
+                    else
+                    {
+                        
+                    }
+                </td>
+                    <td>@orderVM.OrderDetail?.Sum(detail => detail.Count) ?? 0</td>  
+                  <td>@orderVM.OrderHeader.OrderStatus</td>  
+                  <td>@orderVM.OrderHeader.OrderTotal</td> 
+            </tr>
+        }
+    </tbody>
+</table>

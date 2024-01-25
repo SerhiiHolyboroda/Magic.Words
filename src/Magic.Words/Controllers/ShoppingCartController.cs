@@ -2,26 +2,30 @@
 using Magic.Words.Core.Repositories;
 using Magic.Words.Core.ViewModels;
 using Magic.Words.Shared;
+using Magic.Words.Shared.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Stripe;
- 
+
 using Stripe.Checkout;
 using Stripe.Tax;
 using System.Security.Claims;
 
-namespace Magic.Words.Web.Controllers {
+namespace Magic.Words.Web.Controllers
+{
     public class ShoppingCartController : Controller {
         //   [Area("customer")]
         //    [Authorize]
-
+        private readonly IHubContext<ChatHub> _hubContext;
         private readonly ILogger<ShoppingCartController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }
-        public ShoppingCartController(ILogger<ShoppingCartController> logger, IUnitOfWork unitOfWork) {
+        public ShoppingCartController(ILogger<ShoppingCartController> logger, IUnitOfWork unitOfWork, IHubContext<ChatHub> hubContext) {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _hubContext = hubContext;
         }
 
         public IActionResult Index() {
@@ -55,8 +59,7 @@ namespace Magic.Words.Web.Controllers {
             };
             ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUserRepository.Get(u => u.Id == userId);
             ShoppingCartVM.OrderHeader.Email = ShoppingCartVM.OrderHeader.ApplicationUser.Email;
-            Console.WriteLine(ShoppingCartVM.OrderHeader.ApplicationUser + "ShoppingCartVM.OrderHeader.ApplicationUser.Email");
-            Console.WriteLine(ShoppingCartVM.OrderHeader.Email + " ShoppingCartVM.OrderHeader.Email");
+          
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
                 double price = GetPriceBasedOnSomething(cart);
@@ -111,8 +114,10 @@ namespace Magic.Words.Web.Controllers {
                 OrderDetail orderDetail = new() {
                     SubscriptionId = cart.SubscriptionId,
                     OrderHeaderId = ShoppingCartVM.OrderHeader.Id,
-                    Price = cart.Price,
-                    Count = cart.Count
+                  //  Price = cart.Price,
+					Price =  ShoppingCartVM.OrderHeader.OrderTotal,
+
+					Count = cart.Count
                 };
                 _unitOfWork.OrderDetailRepository.Add(orderDetail);
                 _unitOfWork.Save();
@@ -122,10 +127,11 @@ namespace Magic.Words.Web.Controllers {
             // regular customer account we need payment
 
             //    }
-            var domain = "https://localhost:7169/";
+            var domain = "https://localhost:7054/";
             var options = new SessionCreateOptions
             {
-                SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
+             //   SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
+                SuccessUrl = domain + $"ShoppingCart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
                 CancelUrl = domain + "customer/cart/index",
                 LineItems = new List<SessionLineItemOptions>(),
 
@@ -139,8 +145,10 @@ namespace Magic.Words.Web.Controllers {
                 {
                     PriceData = new SessionLineItemPriceDataOptions
                     {
-                        UnitAmount = (long)(item.Price * 100), //
-                        Currency = "usd",
+
+						// UnitAmount = (long)(item.Price * 100)
+						UnitAmount = (long)(ShoppingCartVM.OrderHeader.OrderTotal * 100),
+						Currency = "usd",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
                             Name = item.Subscription.SubscriptionName
@@ -187,7 +195,11 @@ namespace Magic.Words.Web.Controllers {
         }
 
 
-		public IActionResult Plus(int cartId) {
+		public async Task<IActionResult> Plus(int cartId) {
+
+            var userId = "UserIdHere"; // Replace with the actual user ID
+            await _hubContext.Clients.User(userId).SendAsync("ReceiveMessage", "Button pressed!");
+
             var cartFromDb = _unitOfWork.ShoppingCartRepository.Get(u => u.Id == cartId);
             cartFromDb.Count += 1;
             _unitOfWork.ShoppingCartRepository.Update(cartFromDb);

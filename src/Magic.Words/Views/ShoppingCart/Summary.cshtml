@@ -29,12 +29,12 @@
 							</div>
 							<div class="row my-1">
 								<div class="col-3">
-									<label>Name</label>
+									<label>Email</label>
 								</div>
 								<div class="col-9">
-								@* 	<input asp-for=OrderHeader.Name" class="form-control" />
-									<span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
-									*@
+							 	<input asp-for="OrderHeader.Email" class="form-control" />
+									<span asp-validation-for="OrderHeader.Email" class="text-danger"></span>
+									 
 								</div>
 							</div>
 							<div class="row my-1">
@@ -93,30 +93,35 @@
 								<span class="text-info">Order Summary:</span>
 							</h4>
 							<ul class="list-group mb-3">
-								@*foreach(var details in Model.ShopingCArtList){
+								 @foreach(var details in Model.ShoppingCartList){
 
-								*@
+							 
 								<li class="list-group-item d-flex justify-content-between">
 									<div>
 										<h6 class="my-0">
-											@* 		@details.Product.Title*@
+										 		@details.Subscription.SubscriptionName 
 										</h6>	 
-										<small class="text-muted">Quantity: 		@* 		@details.Count*@</small>
+										<small class="text-muted">Quantity: 		 	@details.Count </small>
 									</div>
 									<span class="text-muted">
-										@*	@((details.Price * details.Count).ToString("c")) *@
-
+									 	@((details.Price * details.Count).ToString("c"))
+										 <br />
+											details.Price: @details.Price
+											<br />
+											details.Count: @details.Count
+											<br />
+											@((details.Price * details.Count).ToString("c"))
 									</span>
 								</li>
-								@*
+						 
 
-								}*@
+								} 
 
 								<li class="list-group-item d-flex justify-content-between bg-light">
 									<small class="text-info">Total (USD)</small>
 									<strong class="text-info">$$
 
-										@*@Model.OrderHeader.OrderTotal.ToString("c")*@
+										 @Model.OrderHeader.OrderTotal.ToString("c") 
 									</strong>
 								</li>
 							</ul>
@@ -129,7 +134,7 @@
 					<div class="col-12 col-md-8 pt-2">
 						<p style="color:maroon; font-size:14px;">
 							Estimate Arrival Date:
-							@*DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()*@
+							@DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()
 						</p>
 					</div>
 					<div class="col-12 col-md-4">

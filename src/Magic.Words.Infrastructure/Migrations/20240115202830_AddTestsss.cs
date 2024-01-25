@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Magic.Words.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddingModelToDb : Migration
+    public partial class AddTestsss : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

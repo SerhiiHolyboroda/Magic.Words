@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Magic.Words.Shared
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,6 +23,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                           <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Order" asp-action="Index">Order Managment</a>
+                            @* asp-area="Admin" *@
+                              
+                        </li> 
+                        }
+                         
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Shop" asp-action="Index">Shop</a>
+                            @* asp-area="User" *@
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="OrderHistory" asp-action="Index">Order History</a>
+                            @* asp-area="User" *@
+
+                        </li>
+
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Subscription" asp-action="Index">Subscription</a>
                         </li>
@@ -31,6 +55,12 @@
             </div>
         </nav>
     </header>
+
+    <button id="sendButton">Send Message</button>
+    <ul id="messagesList">1</ul>
+    <input type="text" id="userInput" placeholder="Enter your username">
+    <input type="text" id="messageInput" placeholder="Enter your message">
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -42,10 +72,50 @@
             &copy; 2023 - Magic.Words - <a asp-area="" asp-controller="Subscription" asp-action="Index">Index</a>
         </div>
     </footer>
+   
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.10/signalr.min.js"></script>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/draganddrop.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        // 1 connection
+        var connection = new signalR.HubConnectionBuilder().withUrl("/myHub").build();
+
+        // Disable the send button until connection is established.
+        document.getElementById("sendButton").disabled = true;
+
+        // 2 callback
+        connection.on("ReceiveMessage", function (user, message) {
+            var li = document.createElement("li");
+            document.getElementById("messagesList").appendChild(li);
+            li.textContent = `${user} says ${message}`;
+        });
+
+        // 3 starting point
+        connection.start().then(function () {
+            document.getElementById("sendButton").disabled = false;
+
+            // 4 event listener for button click
+            document.getElementById("sendButton").addEventListener("click", function (event) {
+                var user = document.getElementById("userInput").value;
+                var message = document.getElementById("messageInput").value;
+
+                // 5 send request to the server
+                connection.invoke("SendMessage", user, message).catch(function (err) {
+                    console.error(err.toString());
+                });
+
+                event.preventDefault();
+            });
+        }).catch(function (err) {
+            console.error(err.toString());
+        });
+    </script>
 </body>
 </html>
