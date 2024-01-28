@@ -1,0 +1,24 @@
+﻿@using Magic.Words.Core.Models
+@model List<ApplicationUser>
+
+<h2>User List</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>User Name</th>
+            <th>Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+               
+                <td>@user.UserName</td>
+                @* <td>@user.Rating</td> *@
+            </tr>
+        }
+    </tbody>
+</table>

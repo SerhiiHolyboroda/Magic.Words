@@ -13,7 +13,7 @@ namespace Magic.Words.Core.Models {
         public int Id { get; set; }
         public int SubscriptionId { get; set; }
         [ForeignKey("SubscriptionId")]
-     [ValidateNever]
+        [ValidateNever]
         // public Product Product { get; set; }
 
         public Subscription Subscription { get; set; }
@@ -21,7 +21,7 @@ namespace Magic.Words.Core.Models {
         public int Count { get; set; } = 1;
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
-      [ValidateNever]
+        [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
         [NotMapped]
         public double Price { get; set; }

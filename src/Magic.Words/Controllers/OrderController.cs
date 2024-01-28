@@ -2,6 +2,7 @@
 using Magic.Words.Core.Repositories;
 using Magic.Words.Core.ViewModels;
 using Magic.Words.Shared;
+using Magic.Words.Shared.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,8 +26,8 @@ namespace Magic.Words.Web.Controllers {
 
 
             // Assuming you have a method to map OrderHeader to OrderVM
-            List<OrderVM> orderViewModels = MapToOrderVMList(objOrderDetails, objOrderHeaders);
-
+        //    List<OrderVM> orderViewModels = MapToOrderVMList(objOrderDetails, objOrderHeaders);
+            List<OrderVM> orderViewModels = OrdersVMToList.MapToOrderVMList(objOrderDetails, objOrderHeaders);
             return View(orderViewModels);
         }
         #region APICALLS

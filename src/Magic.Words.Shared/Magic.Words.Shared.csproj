@@ -23,4 +23,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Magic.Words.Core\Magic.Words.Core.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -4,6 +4,9 @@ using Magic.Words.Core.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Magic.Words.Web.Controllers {
+
+   // [Area("Admin")]
+    //  [Authorize(Roles = SD.Role_Admin)]
     public class SubscriptionController : Controller {
 
         private readonly IUnitOfWork _unitOfWork;

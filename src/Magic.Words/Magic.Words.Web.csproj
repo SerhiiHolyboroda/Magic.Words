@@ -49,4 +49,8 @@
     <ProjectReference Include="..\Magic.Words.Shared\Magic.Words.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\" />
+  </ItemGroup>
+
 </Project>

@@ -47,7 +47,7 @@ namespace Magic.Words.Web.Controllers {
         [Route("CreateRecurringJob")]
         public ActionResult CreateRecurringJob() {
             //  RecurringJob.AddOrUpdate("RecuringJob1", () => Console.WriteLine("Recurring Job Triggered"), "* * * * *");
-            RecurringJob.AddOrUpdate<TestJobs>("RecuringJob1", x => x.WriteLog("Recurring Job Triggered"), "* * * * *");s
+            RecurringJob.AddOrUpdate<TestJobs>("RecuringJob1", x => x.WriteLog("Recurring Job Triggered"), "* * * * *");
             return Ok();
         }
 
