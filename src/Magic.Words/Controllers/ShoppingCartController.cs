@@ -112,7 +112,7 @@ namespace Magic.Words.Web.Controllers
             _unitOfWork.Save();
             foreach (var cart in ShoppingCartVM.ShoppingCartList) {
                 OrderDetail orderDetail = new() {
-                    SubscriptionId = cart.SubscriptionId,
+                    SubscriptionId = (int)cart.SubscriptionId,
                     OrderHeaderId = ShoppingCartVM.OrderHeader.Id,
                   //  Price = cart.Price,
 					Price =  ShoppingCartVM.OrderHeader.OrderTotal,
@@ -151,7 +151,7 @@ namespace Magic.Words.Web.Controllers
 						Currency = "usd",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = item.Subscription.SubscriptionName
+                            Name = item.Subscription.Name
                         }
                     },
                     Quantity = item.Count
@@ -232,7 +232,7 @@ namespace Magic.Words.Web.Controllers
         private double GetPriceBasedOnSomething(ShoppingCart shoppingCart) {
             if (shoppingCart.Count < 50)
             {
-                return (double)shoppingCart.Subscription.SubscriptionPrice;
+                return (double)shoppingCart.Subscription.Price;
                 //change price
 
             }
@@ -240,11 +240,11 @@ namespace Magic.Words.Web.Controllers
             {
                 if (shoppingCart.Count <= 100)
                 {
-                    return (double)shoppingCart.Subscription.SubscriptionPrice;
+                    return (double)shoppingCart.Subscription.Price;
                     //change price
                 }
             }
-            return (double)shoppingCart.Subscription.SubscriptionPrice;
+            return (double)shoppingCart.Subscription.Price;
         }
 
 

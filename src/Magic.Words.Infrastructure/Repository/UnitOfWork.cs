@@ -22,6 +22,12 @@ namespace Magic.Words.Core.Repository {
         public IOrderHeaderRepository OrderHeaderRepository { get; private set; }
 
         public IOrderDetailRepository OrderDetailRepository { get; private set; }
+
+        public IShopItemRepository ShopItemRepository { get; private set; }
+
+        public ITopicRepository TopicRepository { get; private set; }
+
+        public ICommentRepository CommentRepository { get; private set; }
         public UnitOfWork(ApplicationDbContext db) {
             _db = db;
             SubscriptionRepository = new SubscriptionRepository(_db);
@@ -29,6 +35,10 @@ namespace Magic.Words.Core.Repository {
             ShoppingCartRepository = new ShoppingCartRepository(_db);
             OrderDetailRepository = new OrderDetailRepository(_db);
             OrderHeaderRepository = new OrderHeaderRepository(_db);
+            ShopItemRepository = new ShopItemRepository(_db);
+            TopicRepository = new TopicRepository(_db);
+            CommentRepository = new CommentRepository(_db);
+
         }
 
         public void Save() {

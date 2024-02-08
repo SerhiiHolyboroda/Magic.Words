@@ -1,4 +1,7 @@
 ﻿
+using Magic.Words.Core.Classes;
+using Magic.Words.Core.Interfaces;
+ 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
@@ -17,7 +20,7 @@ namespace Magic.Words.Core.Models {
         // public Product Product { get; set; }
 
         public Subscription Subscription { get; set; }
-        [Range(1, 1000, ErrorMessage ="Please enter a value between 1 and 1000")]
+        [Range(1, 1000, ErrorMessage = "Please enter a value between 1 and 1000")]
         public int Count { get; set; } = 1;
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]

@@ -22,6 +22,8 @@ namespace Magic.Words.Core.Data {
 
         public DbSet<OrderHeader> OrderHeaders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Topic> Topics { get; set; }
 
         //    public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {

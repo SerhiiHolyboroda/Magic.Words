@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Magic.Words.Core {
     public class Product {
-        public int? Id { get;  set; }
+        //   public int? Id { get;  set; }
+
+        string ItemDescription { get; set; }
     }
 }

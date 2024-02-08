@@ -14,6 +14,12 @@ namespace Magic.Words.Core.Repositories {
          IOrderHeaderRepository OrderHeaderRepository { get; }
 
          IOrderDetailRepository OrderDetailRepository { get;}
+
+        IShopItemRepository ShopItemRepository { get; }
+
+        ITopicRepository TopicRepository { get; }
+
+        ICommentRepository CommentRepository { get; }
         void Save();
     }
 }

@@ -10,9 +10,18 @@ using Magic.Words.Shared.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Http.Connections;
 using Hangfire;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Magic.Words.Infrastructure.Configuration;
+using Magic.Words.Core.Interfaces;
+using Magic.Words.Infrastructure.Services;
+using Magic.Words.Web.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+ 
 builder.Services.AddHangfire((sp, config) => {
     var connectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString("DefaultConnection");
     config.UseSqlServerStorage(connectionString);
@@ -39,17 +48,39 @@ builder.Services.AddSignalR(hubOptions =>
 
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+
+builder.Services.AddAuthentication().AddFacebook(option => {
+    option.AppId = "975859080538523";
+    option.AppSecret = "c39feaea74bb535b754a7afa309cf751";
+});
+
+builder.Services.AddLocalization(options =>
+{
+    options.ResourcesPath = "Resources";
+});
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("en-US"),
+         new CultureInfo("ua-UA")
+    };
+    options.DefaultRequestCulture = new RequestCulture("ua-UA");  
+    options.SupportedCultures = supportedCultures;
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options=> 
                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+builder.Services.Configure<OpenAIConfiguration>(builder.Configuration.GetSection("OpenAI"));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IEmailSender, EmailSenderService>();
+builder.Services.AddScoped<IOpenAIService, OpenAIService>();
 var app = builder.Build();
  
 // Configure the HTTP request pipeline.
@@ -63,15 +94,16 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+ 
 ; app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 // app.MapControllerRoute(
- //   name: "default",
-  //  pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+//   name: "default",
+//  pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
-
+ 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -96,4 +128,8 @@ app.UseHangfireDashboard();
 //DarkModeEnabed = false;
 //DisplayStorageConnectionString = false;
 //});
+
+
+
+
 app.Run();

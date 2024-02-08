@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Magic.Words.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTestsss : Migration
+    public partial class AA1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,13 +54,32 @@ namespace Magic.Words.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ShopItem",
+                columns: table => new
+                {
+                    ShopItemId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShopItemDiscount = table.Column<double>(type: "float", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ShopItemCount = table.Column<int>(type: "int", nullable: false),
+                    ItemDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShopItemTitle = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShopItem", x => x.ShopItemId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Subscriptions",
                 columns: table => new
                 {
                     SubscriptionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SubscriptionName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SubscriptionPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ItemDescription = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -205,6 +224,28 @@ namespace Magic.Words.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Topics",
+                columns: table => new
+                {
+                    TopicId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Topics", x => x.TopicId);
+                    table.ForeignKey(
+                        name: "FK_Topics_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShoppingCarts",
                 columns: table => new
                 {
@@ -259,14 +300,56 @@ namespace Magic.Words.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    CommentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TopicId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.CommentId);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Topics_TopicId",
+                        column: x => x.TopicId,
+                        principalTable: "Topics",
+                        principalColumn: "TopicId");
+                });
+
             migrationBuilder.InsertData(
-                table: "Subscriptions",
-                columns: new[] { "SubscriptionId", "SubscriptionName", "SubscriptionPrice" },
+                table: "ShopItem",
+                columns: new[] { "ShopItemId", "ItemDescription", "Name", "Price", "ShopItemCount", "ShopItemDiscount", "ShopItemTitle" },
                 values: new object[,]
                 {
-                    { 1, "Standart", 0m },
-                    { 2, "Premium", 9.99m },
-                    { 3, "Royal", 99.99m }
+                    { 1, "Description1", "Item1", 10.99m, 5, 0.10000000000000001, "Title1" },
+                    { 2, "Description2", "Item2", 19.99m, 3, 0.20000000000000001, "Title2" },
+                    { 3, "Description3", "Item3", 15.49m, 8, 0.14999999999999999, "Title3" },
+                    { 4, "Description4", "Item4", 25.99m, 2, 0.25, "Title4" },
+                    { 5, "Description5", "Item5", 5.99m, 10, 0.050000000000000003, "Title5" },
+                    { 6, "Description6", "Item6", 30.99m, 4, 0.29999999999999999, "Title6" },
+                    { 7, "Description7", "Item7", 12.99m, 6, 0.12, "Title7" },
+                    { 8, "Description8", "Item8", 18.99m, 7, 0.17999999999999999, "Title8" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Subscriptions",
+                columns: new[] { "SubscriptionId", "ItemDescription", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, "Test1", "Standart", 0m },
+                    { 2, "Test2", "Premium", 9.99m },
+                    { 3, "Test3", "Royal", 99.99m }
                 });
 
             migrationBuilder.CreateIndex(
@@ -309,6 +392,16 @@ namespace Magic.Words.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_ApplicationUserId",
+                table: "Comments",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_TopicId",
+                table: "Comments",
+                column: "TopicId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderHeaderId",
                 table: "OrderDetails",
                 column: "OrderHeaderId");
@@ -332,6 +425,11 @@ namespace Magic.Words.Infrastructure.Migrations
                 name: "IX_ShoppingCarts_SubscriptionId",
                 table: "ShoppingCarts",
                 column: "SubscriptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Topics_ApplicationUserId",
+                table: "Topics",
+                column: "ApplicationUserId");
         }
 
         /// <inheritdoc />
@@ -353,13 +451,22 @@ namespace Magic.Words.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
                 name: "OrderDetails");
+
+            migrationBuilder.DropTable(
+                name: "ShopItem");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Topics");
 
             migrationBuilder.DropTable(
                 name: "OrderHeaders");

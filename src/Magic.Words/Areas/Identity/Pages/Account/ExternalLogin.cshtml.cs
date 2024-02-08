@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Magic.Words.Shared;
 
 namespace Magic.Words.Web.Areas.Identity.Pages.Account
 {
@@ -132,6 +133,7 @@ namespace Magic.Words.Web.Areas.Identity.Pages.Account
                     Input = new InputModel
                     {
                         Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                      //  Email = info.Principal.FindFirstValue(ClaimTypes.Email)
                     };
                 }
                 return Page();
@@ -159,6 +161,7 @@ namespace Magic.Words.Web.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, SD.Role_Default);
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {

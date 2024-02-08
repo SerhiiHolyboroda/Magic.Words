@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34227.203
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magic.Words.Web", "Magic.Words.Web.csproj", "{637CF295-B6D6-4495-8998-5D381F41C724}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magic.Words.Web", "Magic.Words.Web.csproj", "{637CF295-B6D6-4495-8998-5D381F41C724}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magic.Words.Application", "..\Magic.Words.Application\Magic.Words.Application.csproj", "{8AC104AC-88E0-47F6-B804-A95A71C8CD26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magic.Words.Application", "..\Magic.Words.Application\Magic.Words.Application.csproj", "{8AC104AC-88E0-47F6-B804-A95A71C8CD26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magic.Words.Core", "..\Magic.Words.Core\Magic.Words.Core.csproj", "{2169139B-571B-42F9-9360-D672BDF28E7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magic.Words.Core", "..\Magic.Words.Core\Magic.Words.Core.csproj", "{2169139B-571B-42F9-9360-D672BDF28E7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magic.Words.Infrastructure", "..\Magic.Words.Infrastructure\Magic.Words.Infrastructure.csproj", "{9EF27517-7596-4019-9DB1-D7E3D1E16AF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magic.Words.Infrastructure", "..\Magic.Words.Infrastructure\Magic.Words.Infrastructure.csproj", "{9EF27517-7596-4019-9DB1-D7E3D1E16AF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magic.Words.Shared", "..\Magic.Words.Shared\Magic.Words.Shared.csproj", "{4DF419A4-8C18-4F25-982A-29FF3EEBDEB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magic.Words.Shared", "..\Magic.Words.Shared\Magic.Words.Shared.csproj", "{4DF419A4-8C18-4F25-982A-29FF3EEBDEB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D0C478F1-79EA-4B1D-B8C9-41FEC49E8BDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicTests", "..\MagicTests\MagicTests.csproj", "{CAD1738E-3A62-425C-9751-4E8DF70BE39F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +43,16 @@ Global
 		{4DF419A4-8C18-4F25-982A-29FF3EEBDEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DF419A4-8C18-4F25-982A-29FF3EEBDEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DF419A4-8C18-4F25-982A-29FF3EEBDEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAD1738E-3A62-425C-9751-4E8DF70BE39F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAD1738E-3A62-425C-9751-4E8DF70BE39F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAD1738E-3A62-425C-9751-4E8DF70BE39F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAD1738E-3A62-425C-9751-4E8DF70BE39F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CAD1738E-3A62-425C-9751-4E8DF70BE39F} = {D0C478F1-79EA-4B1D-B8C9-41FEC49E8BDC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE00295C-BEE5-432C-A88D-E22473A244B4}

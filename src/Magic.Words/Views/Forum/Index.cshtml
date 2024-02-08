@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Forum</title>
+</head>
+<body>
+    <h2 id="topic">Forum Topics</h2>
+
+    @foreach (var topic in Model)
+    {
+        @if (@topic.isActive)
+        {
+            <div>
+                <h3>@topic.Title</h3>
+                <p>@topic.Content</p>
+                <p>Created at: @topic.CreatedAt</p>
+
+                @if (topic.Comments != null 
+                
+                @*  &&  topic.Comments.Any() *@
+                
+                )
+                {
+                    <h4>Comments:</h4>
+                    <ul id="commentsList">
+                        @foreach (var comment in topic.Comments)
+                        {
+                            <li>
+                                <p>@comment.Content Comment content</p>
+                                <p>Created at: @comment.CreatedAt</p>
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <form asp-controller="Forum" asp-action="DeleteComment" method="post">
+                                        <input type="hidden" name="commentId" value="@comment.CommentId" />
+                                        <button type="submit">Delete Comment</button>
+                                    </form>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+
+                <form asp-controller="Forum" asp-action="CreateComment" method="post">
+                    <input type="hidden" name="topicId" value="@topic.TopicId" />
+                    <label for="commentContent">Add Comment:</label>
+                    <input type="text" name="commentContent" required />
+                    <button type="submit">Post Comment</button>
+                </form>
+            </div>
+        }
+        <hr />
+    }
+
+    <form asp-controller="Forum" asp-action="CreateTopic" method="get">
+        <button type="submit">Create New Post</button>
+    </form>
+</body>
+</html>
+
+
+<!-- Include SignalR JavaScript library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.10/signalr.min.js"></script>
+
+<!-- Your existing view... -->
+
+<script>
+    var hubConnection = new signalR.HubConnectionBuilder().withUrl("/myHub", {
+        skipNegotiation: false,
+        transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling
+    }).build();
+
+    hubConnection.on("ReceiveComment", function (commentContent) {
+        // Handle the received comment, update the UI, etc.
+        console.log("New comment received:", commentContent);
+
+        // Example: Append the new comment to the DOM
+        var newCommentElement = document.createElement("li");
+        newCommentElement.innerHTML = "<p>" + commentContent + " Comment content</p><p>Created at: " + new Date().toLocaleString() + "</p>";
+        document.getElementById("commentsList").appendChild(newCommentElement);
+    });
+
+    hubConnection.on("DeleteComment", function (commentId) {
+        // Handle the deleted comment, update the UI, etc.
+        console.log("Comment deleted:", commentId);
+
+        // Example: Remove the deleted comment from the DOM
+        var commentElement = document.getElementById("comment_" + commentId);
+        if (commentElement) {
+            commentElement.remove();
+        }
+    });
+
+    hubConnection.start().then(function () {
+        console.log("SignalR connection established.");
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+</script>

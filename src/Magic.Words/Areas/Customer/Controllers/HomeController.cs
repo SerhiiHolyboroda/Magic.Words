@@ -1,5 +1,6 @@
 using Magic.Words.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System.Diagnostics;
 
 namespace Magic.Words.Web.Areas.Customer.Controllers
@@ -7,14 +8,17 @@ namespace Magic.Words.Web.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IStringLocalizer<HomeController> _localization;
+        public HomeController(ILogger<HomeController> logger, IStringLocalizer<HomeController> localization )
         {
+            _localization = localization;
             _logger = logger;
         }
 
         public IActionResult Index()
         {
+
+            var localizedTitle = _localization["Welcome"];
             return View();
         }
 

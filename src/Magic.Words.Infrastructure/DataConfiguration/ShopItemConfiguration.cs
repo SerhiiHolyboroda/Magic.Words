@@ -13,19 +13,19 @@ namespace Magic.Words.Core.DataConfiguration {
 
             builder.HasKey(s => s.ShopItemId);
             // Properties
-            builder.Property(si => si.ShopItemName)
+            builder.Property(si => si.Name)
                 .IsRequired();
 
             builder.Property(si => si.ShopItemDiscount)
                 .IsRequired();
 
-            builder.Property(si => si.ShopItemPrice)
+            builder.Property(si => si.Price)
                 .IsRequired();
 
             builder.Property(si => si.ShopItemCount)
                 .IsRequired();
 
-            builder.Property(si => si.ShopItemDescription)
+            builder.Property(si => si.ItemDescription)
                 .IsRequired();
 
             builder.Property(si => si.ShopItemTitle)
