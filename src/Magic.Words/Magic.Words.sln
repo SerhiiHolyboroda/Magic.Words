@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magic.Words.Shared", "..\Ma
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D0C478F1-79EA-4B1D-B8C9-41FEC49E8BDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicTests", "..\MagicTests\MagicTests.csproj", "{CAD1738E-3A62-425C-9751-4E8DF70BE39F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicTests", "..\MagicTests\MagicTests.csproj", "{CAD1738E-3A62-425C-9751-4E8DF70BE39F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

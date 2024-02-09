@@ -17,6 +17,7 @@ using Magic.Words.Infrastructure.Configuration;
 using Magic.Words.Core.Interfaces;
 using Magic.Words.Infrastructure.Services;
 using Magic.Words.Web.Controllers;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +47,7 @@ builder.Services.AddSignalR(hubOptions =>
 
 
 
-
+builder.Services.AddRazorComponents();
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
@@ -59,6 +60,9 @@ builder.Services.AddLocalization(options =>
 {
     options.ResourcesPath = "Resources";
 });
+
+
+ 
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -75,6 +79,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options=>
 
 builder.Services.Configure<OpenAIConfiguration>(builder.Configuration.GetSection("OpenAI"));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
+
+builder.Services.AddRazorPages().AddRazorPagesOptions(options =>
+{
+    options.Conventions.AddPageRoute("/Shared/Index", "/Index");
+});
+
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddRazorPages();
@@ -95,18 +106,20 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
  
-; app.UseRouting();
+  app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 // app.MapControllerRoute(
 //   name: "default",
 //  pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
-
  
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+
 
 app.MapHub<MyHub>("/myHub", options => { 
 options.ApplicationMaxBufferSize = 128;
@@ -128,8 +141,6 @@ app.UseHangfireDashboard();
 //DarkModeEnabed = false;
 //DisplayStorageConnectionString = false;
 //});
-
-
-
+ 
 
 app.Run();

@@ -1,0 +1,42 @@
+﻿
+@page "/Indexh"
+@using BlazorMagicWords.Components.Data
+@using static BlazorMagicWords.Components.Data.JobModel
+ 
+ 
+ 
+
+<h1>Hello, world!</h1>
+
+<JobsContainer Jobs="Jobs" OnStatusUpdated="HandleStatusUpdate">
+<JobList ListStatus="JobStatuses.Todo" AllowedStatuses="@(new JobStatuses[] { JobStatuses.Todo})" />
+<JobList ListStatus="JobStatuses.Started" AllowedStatuses="@(new JobStatuses[] { JobStatuses.Started})" />
+<JobList ListStatus="JobStatuses.Completed" AllowedStatuses="@(new JobStatuses[] { JobStatuses.Completed})" />
+</JobsContainer>
+<hr />
+<p>Last Updated Job <strong>@lastUpdatedJob</strong></p>
+<hr />
+@foreach (var task in Jobs)
+{
+<p>@task. Detail - <strong>@task.Status</strong></p>
+}
+
+@code{
+    List<JobModel> Jobs = new List<JobModel>();
+    string lastUpdatedJob = "";
+    protected override void OnInitialized()   {
+        for (int i = 1; i <= 5; i++){
+            Jobs.Add(new JobModel {
+                    Id = i,
+                    Detail = "Job" + i,
+                    Status = JobStatuses.Todo,
+                    UpdatedTime = DateTime.Now
+
+                });
+        }
+    }
+    void HandleStatusUpdate(JobModel updatedJob){
+        lastUpdatedJob = updatedJob.Detail;
+    }
+}
+
