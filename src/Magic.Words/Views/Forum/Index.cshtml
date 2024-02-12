@@ -1,62 +1,59 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title>Forum</title>
-</head>
-<body>
+﻿ 
     <h2 id="topic">Forum Topics</h2>
 
-    @foreach (var topic in Model)
+@foreach (var topic in Model)
+{
+    @if (topic.isActive)
     {
-        @if (@topic.isActive)
-        {
-            <div>
-                <h3>@topic.Title</h3>
-                <p>@topic.Content</p>
-                <p>Created at: @topic.CreatedAt</p>
+        <div class="topic-container">
+            <h3>@topic.Title</h3>
+            <p class="topic-content">@topic.Content</p>
+            <p class="topic-date">Created at: @topic.CreatedAt</p>
 
-                @if (topic.Comments != null 
-                
-                @*  &&  topic.Comments.Any() *@
-                
-                )
-                {
-                    <h4>Comments:</h4>
-                    <ul id="commentsList">
-                        @foreach (var comment in topic.Comments)
-                        {
-                            <li>
-                                <p>@comment.Content Comment content</p>
-                                <p>Created at: @comment.CreatedAt</p>
+             
+                <h4>Comments:</h4>
+                <ul class="comment-list">
+                    @foreach (var comment in topic.Comments)
+                    {
+                        <li>
+                            <p> Comment content @comment.Content  </p>
+                            <p class="comment-date">Created at: @comment.CreatedAt</p>
 
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <form asp-controller="Forum" asp-action="DeleteComment" method="post">
-                                        <input type="hidden" name="commentId" value="@comment.CommentId" />
-                                        <button type="submit">Delete Comment</button>
-                                    </form>
-                                }
-                            </li>
-                        }
-                    </ul>
-                }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <form asp-controller="Forum" asp-action="DeleteComment" method="post">
+                                    <input type="hidden" name="commentId" value="@comment.CommentId" />
+                                    <button type="submit" class="delete-button">Delete Comment</button>
+                                </form>
+                            }
+                        </li>
+                    }
+                </ul>
+            
 
-                <form asp-controller="Forum" asp-action="CreateComment" method="post">
-                    <input type="hidden" name="topicId" value="@topic.TopicId" />
-                    <label for="commentContent">Add Comment:</label>
-                    <input type="text" name="commentContent" required />
-                    <button type="submit">Post Comment</button>
-                </form>
-            </div>
-        }
-        <hr />
+            <form class="comment-form" asp-controller="Forum" asp-action="CreateComment" method="post">
+                <input type="hidden" name="topicId" value="@topic.TopicId" />
+                <label for="commentContent">Add Comment:</label>
+                <input type="text" name="commentContent" required />
+                <button type="submit" class="submit-button">Post Comment</button>
+            </form>
+        </div>
     }
+    <hr class="separator" />
+}
 
-    <form asp-controller="Forum" asp-action="CreateTopic" method="get">
-        <button type="submit">Create New Post</button>
-    </form>
-</body>
-</html>
+<form class="topic-form" asp-controller="Forum" asp-action="CreateTopic" method="post">
+    <div>
+        <label for="Title">Title:</label>
+        <input type="text" id="Title" name="Title" required />
+    </div>
+    <div>
+        <label for="Content">Content:</label>
+        <textarea id="Content" name="Content" required></textarea>
+    </div>
+    <button type="submit" class="submit-button">Create Topic</button>
+</form>
+ 
 
 
 <!-- Include SignalR JavaScript library -->

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Magic.Words.Core.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +9,17 @@ using System.Threading.Tasks;
 namespace Magic.Words.Shared.Hubs
 {
     public sealed class ChatHub : Hub
+        // <IChatClient>
     {
-        public override async Task OnConnectedAsync()
+     /*   public override async Task OnConnectedAsync()
         {
-            await Clients.All.SendAsync("ReceiveMessage", $"{Context.ConnectionId} has joined");
+            await Clients.All.ReceiveMessage( $"{Context.ConnectionId} ");
+        }
+     */
+        public async Task SendMessage(string user, string message) {
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task SendMessage(string userId, string message)
-        {
-            await Clients.User(userId).SendAsync("ReceiveMessage", message);
-        }
+
     }
 }

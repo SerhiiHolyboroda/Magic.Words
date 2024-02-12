@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Magic.Words.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240204120346_AA1")]
-    partial class AA1
+    [Migration("20240211205522_AA3")]
+    partial class AA3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,9 @@ namespace Magic.Words.Infrastructure.Migrations
                     b.Property<int?>("TopicId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("CommentId");
 
                     b.HasIndex("ApplicationUserId");
@@ -54,6 +57,35 @@ namespace Magic.Words.Infrastructure.Migrations
                     b.HasIndex("TopicId");
 
                     b.ToTable("Comments");
+
+                    b.HasData(
+                        new
+                        {
+                            CommentId = 1,
+                            ApplicationUserId = "user2",
+                            Content = "Comment 1 for Topic 1",
+                            CreatedAt = new DateTime(2024, 2, 11, 22, 55, 20, 255, DateTimeKind.Local).AddTicks(109),
+                            TopicId = 1,
+                            isActive = true
+                        },
+                        new
+                        {
+                            CommentId = 2,
+                            ApplicationUserId = "user1",
+                            Content = "Comment 2 for Topic 1",
+                            CreatedAt = new DateTime(2024, 2, 11, 22, 55, 20, 255, DateTimeKind.Local).AddTicks(114),
+                            TopicId = 1,
+                            isActive = true
+                        },
+                        new
+                        {
+                            CommentId = 3,
+                            ApplicationUserId = "user2",
+                            Content = "Comment 1 for Topic 2",
+                            CreatedAt = new DateTime(2024, 2, 11, 22, 55, 20, 255, DateTimeKind.Local).AddTicks(117),
+                            TopicId = 2,
+                            isActive = true
+                        });
                 });
 
             modelBuilder.Entity("Magic.Words.Core.Models.OrderDetail", b =>
@@ -73,12 +105,18 @@ namespace Magic.Words.Infrastructure.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("SubscriptionId")
+                    b.Property<int?>("ShopItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SubscriptionId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderHeaderId");
+
+                    b.HasIndex("ShopItemId");
 
                     b.HasIndex("SubscriptionId");
 
@@ -272,12 +310,17 @@ namespace Magic.Words.Infrastructure.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubscriptionId")
+                    b.Property<int?>("ShopItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ShopItemId");
 
                     b.HasIndex("SubscriptionId");
 
@@ -353,11 +396,43 @@ namespace Magic.Words.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("TopicId");
 
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Topics");
+
+                    b.HasData(
+                        new
+                        {
+                            TopicId = 1,
+                            ApplicationUserId = "user1",
+                            Content = "Content for Topic 1",
+                            CreatedAt = new DateTime(2024, 2, 11, 22, 55, 20, 255, DateTimeKind.Local).AddTicks(21),
+                            Title = "Topic 1",
+                            isActive = true
+                        },
+                        new
+                        {
+                            TopicId = 2,
+                            ApplicationUserId = "user2",
+                            Content = "Content for Topic 2",
+                            CreatedAt = new DateTime(2024, 2, 11, 22, 55, 20, 255, DateTimeKind.Local).AddTicks(72),
+                            Title = "Topic 2",
+                            isActive = true
+                        },
+                        new
+                        {
+                            TopicId = 3,
+                            ApplicationUserId = "user1",
+                            Content = "Content for Topic 3",
+                            CreatedAt = new DateTime(2024, 2, 11, 22, 55, 20, 255, DateTimeKind.Local).AddTicks(76),
+                            Title = "Topic 3",
+                            isActive = true
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -572,6 +647,40 @@ namespace Magic.Words.Infrastructure.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "user1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "dd036213-74cd-4bac-a859-a7787463a3d0",
+                            Email = "user1@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "USER1@EXAMPLE.COM",
+                            NormalizedUserName = "USER1@EXAMPLE.COM",
+                            PasswordHash = "DFADAS!@#@#@!",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "74b31286-d324-40a6-b709-7bb123eabffa",
+                            TwoFactorEnabled = false,
+                            UserName = "user1@example.com"
+                        },
+                        new
+                        {
+                            Id = "user2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7d350066-6a57-4592-b13f-5309b9f9f4d3",
+                            Email = "user2@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "USER2@EXAMPLE.COM",
+                            NormalizedUserName = "USER2@EXAMPLE.COM",
+                            PasswordHash = "ADsaD@!dsadsa",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "91d5d73e-40c5-4594-86b3-322f4e056702",
+                            TwoFactorEnabled = false,
+                            UserName = "user2@example.com"
+                        });
                 });
 
             modelBuilder.Entity("Magic.Words.Core.Models.Comment", b =>
@@ -599,6 +708,10 @@ namespace Magic.Words.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Magic.Words.Core.Models.ShopItem", "ShopItem")
+                        .WithMany()
+                        .HasForeignKey("ShopItemId");
+
                     b.HasOne("Magic.Words.Core.Models.Subscription", "Subscription")
                         .WithMany()
                         .HasForeignKey("SubscriptionId")
@@ -606,6 +719,8 @@ namespace Magic.Words.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("OrderHeader");
+
+                    b.Navigation("ShopItem");
 
                     b.Navigation("Subscription");
                 });
@@ -629,13 +744,17 @@ namespace Magic.Words.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Magic.Words.Core.Models.ShopItem", "ShopItem")
+                        .WithMany()
+                        .HasForeignKey("ShopItemId");
+
                     b.HasOne("Magic.Words.Core.Models.Subscription", "Subscription")
                         .WithMany()
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubscriptionId");
 
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("ShopItem");
 
                     b.Navigation("Subscription");
                 });

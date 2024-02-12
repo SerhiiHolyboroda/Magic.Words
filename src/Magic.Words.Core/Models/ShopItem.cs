@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Magic.Words.Core.Models {
-    public class ShopItem  : CartItem {
+    public class ShopItem  
+       // : CartItem
+        {
 
 
         public int ShopItemId { get; set; }

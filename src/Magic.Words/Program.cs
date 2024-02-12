@@ -18,13 +18,14 @@ using Magic.Words.Core.Interfaces;
 using Magic.Words.Infrastructure.Services;
 using Magic.Words.Web.Controllers;
 using Microsoft.AspNetCore.Builder;
+using Magic.Words.Infrastructure.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
  
 builder.Services.AddHangfire((sp, config) => {
-    var connectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString("DefaultConnection");
+    var connectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString("DBConnection");
     config.UseSqlServerStorage(connectionString);
 });
 builder.Services.AddHangfireServer();
@@ -61,8 +62,8 @@ builder.Services.AddLocalization(options =>
     options.ResourcesPath = "Resources";
 });
 
-
- 
+builder.Services.AddScoped<TestJobs>();
+builder.Services.AddHttpClient();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -101,7 +102,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.MapHub<ChatHub>("/chatHub");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
@@ -135,12 +136,12 @@ app.MapHub<MyHub>("/myHub", async string message, IHubContext<MyHub> hubContext)
 }
 );
 */
-app.UseHangfireDashboard();
-//app.UseHangfireDashboard("test/job-dashboard" , new DashboardOptions {
-// DashboarsTitle = "Hangfire Job Demo Application";
-//DarkModeEnabed = false;
-//DisplayStorageConnectionString = false;
-//});
+ 
+app.UseHangfireDashboard("/test/job-dashboard", new DashboardOptions {
+ DashboardTitle = "Hangfire Job Demo Application",
+DarkModeEnabled = true,
+DisplayStorageConnectionString = false,
+});
  
 
 app.Run();

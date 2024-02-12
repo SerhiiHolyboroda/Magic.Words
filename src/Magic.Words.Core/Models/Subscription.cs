@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Magic.Words.Core.Models {
-    public class Subscription  : CartItem {
+    public class Subscription   {
     //    [Key]
 
 

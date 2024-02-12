@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Magic.Words.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240204121023_AA2")]
-    partial class AA2
+    [Migration("20240211211228_AA7")]
+    partial class AA7
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,9 @@ namespace Magic.Words.Infrastructure.Migrations
                     b.Property<int?>("TopicId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("CommentId");
 
                     b.HasIndex("ApplicationUserId");
@@ -61,24 +64,27 @@ namespace Magic.Words.Infrastructure.Migrations
                             CommentId = 1,
                             ApplicationUserId = "user2",
                             Content = "Comment 1 for Topic 1",
-                            CreatedAt = new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6141),
-                            TopicId = 1
+                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6548),
+                            TopicId = 1,
+                            isActive = true
                         },
                         new
                         {
                             CommentId = 2,
                             ApplicationUserId = "user1",
                             Content = "Comment 2 for Topic 1",
-                            CreatedAt = new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6145),
-                            TopicId = 1
+                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6553),
+                            TopicId = 1,
+                            isActive = true
                         },
                         new
                         {
                             CommentId = 3,
                             ApplicationUserId = "user2",
                             Content = "Comment 1 for Topic 2",
-                            CreatedAt = new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6148),
-                            TopicId = 2
+                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6556),
+                            TopicId = 2,
+                            isActive = true
                         });
                 });
 
@@ -99,12 +105,17 @@ namespace Magic.Words.Infrastructure.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("SubscriptionId")
+                    b.Property<int?>("ShopItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderHeaderId");
+
+                    b.HasIndex("ShopItemId");
 
                     b.HasIndex("SubscriptionId");
 
@@ -298,12 +309,17 @@ namespace Magic.Words.Infrastructure.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubscriptionId")
+                    b.Property<int?>("ShopItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ShopItemId");
 
                     b.HasIndex("SubscriptionId");
 
@@ -379,6 +395,9 @@ namespace Magic.Words.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("TopicId");
 
                     b.HasIndex("ApplicationUserId");
@@ -391,24 +410,27 @@ namespace Magic.Words.Infrastructure.Migrations
                             TopicId = 1,
                             ApplicationUserId = "user1",
                             Content = "Content for Topic 1",
-                            CreatedAt = new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6044),
-                            Title = "Topic 1"
+                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6447),
+                            Title = "Topic 1",
+                            isActive = true
                         },
                         new
                         {
                             TopicId = 2,
                             ApplicationUserId = "user2",
                             Content = "Content for Topic 2",
-                            CreatedAt = new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6094),
-                            Title = "Topic 2"
+                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6506),
+                            Title = "Topic 2",
+                            isActive = true
                         },
                         new
                         {
                             TopicId = 3,
                             ApplicationUserId = "user1",
                             Content = "Content for Topic 3",
-                            CreatedAt = new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6097),
-                            Title = "Topic 3"
+                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6509),
+                            Title = "Topic 3",
+                            isActive = true
                         });
                 });
 
@@ -630,7 +652,7 @@ namespace Magic.Words.Infrastructure.Migrations
                         {
                             Id = "user1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2f6afe78-b3c4-4e9b-b396-5cbfa90a20f0",
+                            ConcurrencyStamp = "c302529d-2825-4e8e-a38d-de508581c06f",
                             Email = "user1@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -638,7 +660,7 @@ namespace Magic.Words.Infrastructure.Migrations
                             NormalizedUserName = "USER1@EXAMPLE.COM",
                             PasswordHash = "DFADAS!@#@#@!",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2964b4a1-30d4-420b-9d66-312cd317eb61",
+                            SecurityStamp = "6823661e-062f-4a40-bccd-573f638ef44d",
                             TwoFactorEnabled = false,
                             UserName = "user1@example.com"
                         },
@@ -646,7 +668,7 @@ namespace Magic.Words.Infrastructure.Migrations
                         {
                             Id = "user2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "45a8c1c6-f506-4a5c-b312-bb817e9adcf9",
+                            ConcurrencyStamp = "e0f9e681-e727-4692-befc-32fc7fb021b7",
                             Email = "user2@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -654,7 +676,7 @@ namespace Magic.Words.Infrastructure.Migrations
                             NormalizedUserName = "USER2@EXAMPLE.COM",
                             PasswordHash = "ADsaD@!dsadsa",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7207055d-1b6a-4e72-b66e-07678e131e6d",
+                            SecurityStamp = "72e4ce96-f897-4e8c-986c-bbc53f902497",
                             TwoFactorEnabled = false,
                             UserName = "user2@example.com"
                         });
@@ -685,13 +707,17 @@ namespace Magic.Words.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Magic.Words.Core.Models.ShopItem", "ShopItem")
+                        .WithMany()
+                        .HasForeignKey("ShopItemId");
+
                     b.HasOne("Magic.Words.Core.Models.Subscription", "Subscription")
                         .WithMany()
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubscriptionId");
 
                     b.Navigation("OrderHeader");
+
+                    b.Navigation("ShopItem");
 
                     b.Navigation("Subscription");
                 });
@@ -715,13 +741,17 @@ namespace Magic.Words.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Magic.Words.Core.Models.ShopItem", "ShopItem")
+                        .WithMany()
+                        .HasForeignKey("ShopItemId");
+
                     b.HasOne("Magic.Words.Core.Models.Subscription", "Subscription")
                         .WithMany()
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubscriptionId");
 
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("ShopItem");
 
                     b.Navigation("Subscription");
                 });

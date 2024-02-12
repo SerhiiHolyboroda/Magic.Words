@@ -6,148 +6,126 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Magic.Words.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AA3 : Migration
+    public partial class AA6 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "isActive",
-                table: "Topics",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "isActive",
-                table: "Comments",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "user1",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "6fadd724-49dd-48da-ac7e-bcdaccb352b6", "b0d18a7a-3ff9-4ce8-8e38-44b07fc26ab5" });
+                values: new object[] { "16e68ea8-4df2-45e0-8ec5-c478669ea2c5", "b1151bca-c64d-4628-82e2-730671212bc6" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "user2",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "ec94618f-9e9a-4b2d-9e37-e971ca294f98", "e79e291e-e6b5-4c47-be1c-6d20d91924be" });
+                values: new object[] { "af52e0d7-d825-4ca3-855a-03d5ed4a34a0", "22317872-4d40-43f9-af26-24f16d75a7d5" });
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "CommentId",
                 keyValue: 1,
-                columns: new[] { "CreatedAt", "isActive" },
-                values: new object[] { new DateTime(2024, 2, 4, 16, 50, 3, 674, DateTimeKind.Local).AddTicks(9053), true });
+                column: "CreatedAt",
+                value: new DateTime(2024, 2, 11, 23, 7, 27, 197, DateTimeKind.Local).AddTicks(8867));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "CommentId",
                 keyValue: 2,
-                columns: new[] { "CreatedAt", "isActive" },
-                values: new object[] { new DateTime(2024, 2, 4, 16, 50, 3, 674, DateTimeKind.Local).AddTicks(9058), true });
+                column: "CreatedAt",
+                value: new DateTime(2024, 2, 11, 23, 7, 27, 197, DateTimeKind.Local).AddTicks(8872));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "CommentId",
                 keyValue: 3,
-                columns: new[] { "CreatedAt", "isActive" },
-                values: new object[] { new DateTime(2024, 2, 4, 16, 50, 3, 674, DateTimeKind.Local).AddTicks(9061), true });
+                column: "CreatedAt",
+                value: new DateTime(2024, 2, 11, 23, 7, 27, 197, DateTimeKind.Local).AddTicks(8875));
 
             migrationBuilder.UpdateData(
                 table: "Topics",
                 keyColumn: "TopicId",
                 keyValue: 1,
-                columns: new[] { "CreatedAt", "isActive" },
-                values: new object[] { new DateTime(2024, 2, 4, 16, 50, 3, 674, DateTimeKind.Local).AddTicks(8971), true });
+                column: "CreatedAt",
+                value: new DateTime(2024, 2, 11, 23, 7, 27, 197, DateTimeKind.Local).AddTicks(8774));
 
             migrationBuilder.UpdateData(
                 table: "Topics",
                 keyColumn: "TopicId",
                 keyValue: 2,
-                columns: new[] { "CreatedAt", "isActive" },
-                values: new object[] { new DateTime(2024, 2, 4, 16, 50, 3, 674, DateTimeKind.Local).AddTicks(9016), true });
+                column: "CreatedAt",
+                value: new DateTime(2024, 2, 11, 23, 7, 27, 197, DateTimeKind.Local).AddTicks(8830));
 
             migrationBuilder.UpdateData(
                 table: "Topics",
                 keyColumn: "TopicId",
                 keyValue: 3,
-                columns: new[] { "CreatedAt", "isActive" },
-                values: new object[] { new DateTime(2024, 2, 4, 16, 50, 3, 674, DateTimeKind.Local).AddTicks(9019), true });
+                column: "CreatedAt",
+                value: new DateTime(2024, 2, 11, 23, 7, 27, 197, DateTimeKind.Local).AddTicks(8833));
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "isActive",
-                table: "Topics");
-
-            migrationBuilder.DropColumn(
-                name: "isActive",
-                table: "Comments");
-
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "user1",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "2f6afe78-b3c4-4e9b-b396-5cbfa90a20f0", "2964b4a1-30d4-420b-9d66-312cd317eb61" });
+                values: new object[] { "574cd22e-9c28-4a14-adb6-bac7108122fd", "2c5efbd0-c201-4278-ab7b-4240b9c448b7" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "user2",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "45a8c1c6-f506-4a5c-b312-bb817e9adcf9", "7207055d-1b6a-4e72-b66e-07678e131e6d" });
+                values: new object[] { "d900c721-777f-44a1-a6f1-95f2b41f8ee7", "9dcdc65b-2469-4cc3-bd1c-4b3012762f3c" });
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "CommentId",
                 keyValue: 1,
                 column: "CreatedAt",
-                value: new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6141));
+                value: new DateTime(2024, 2, 11, 23, 5, 9, 875, DateTimeKind.Local).AddTicks(1546));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "CommentId",
                 keyValue: 2,
                 column: "CreatedAt",
-                value: new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6145));
+                value: new DateTime(2024, 2, 11, 23, 5, 9, 875, DateTimeKind.Local).AddTicks(1551));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "CommentId",
                 keyValue: 3,
                 column: "CreatedAt",
-                value: new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6148));
+                value: new DateTime(2024, 2, 11, 23, 5, 9, 875, DateTimeKind.Local).AddTicks(1554));
 
             migrationBuilder.UpdateData(
                 table: "Topics",
                 keyColumn: "TopicId",
                 keyValue: 1,
                 column: "CreatedAt",
-                value: new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6044));
+                value: new DateTime(2024, 2, 11, 23, 5, 9, 875, DateTimeKind.Local).AddTicks(1461));
 
             migrationBuilder.UpdateData(
                 table: "Topics",
                 keyColumn: "TopicId",
                 keyValue: 2,
                 column: "CreatedAt",
-                value: new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6094));
+                value: new DateTime(2024, 2, 11, 23, 5, 9, 875, DateTimeKind.Local).AddTicks(1511));
 
             migrationBuilder.UpdateData(
                 table: "Topics",
                 keyColumn: "TopicId",
                 keyValue: 3,
                 column: "CreatedAt",
-                value: new DateTime(2024, 2, 4, 14, 10, 22, 333, DateTimeKind.Local).AddTicks(6097));
+                value: new DateTime(2024, 2, 11, 23, 5, 9, 875, DateTimeKind.Local).AddTicks(1514));
         }
     }
 }

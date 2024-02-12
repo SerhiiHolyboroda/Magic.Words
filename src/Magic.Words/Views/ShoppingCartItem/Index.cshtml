@@ -34,10 +34,7 @@
                                 class="rounded" width="100%" />
                             </div>
                             <div class="col-12 col-lg-6 pt-md-3">
-                                @if (@item.Subscription != null)
-                                {
-                                    <h5 class="text-uppercase text-secondary"><strong>"@item.Subscription.Name</strong></h5>
-                                }
+                              
                                 @if (@item.ShopItem != null)
                                 {
                                     <h5 class="text-uppercase text-secondary"><strong>"@item.ShopItem.Name</strong></h5>
@@ -48,10 +45,7 @@
                             <div class="col-3 text-md-right pt-2 pt-md-4">
                                 <h6 class="fw-semibold">
                                     Price
-                                        @if (@item.Subscription != null)
-                                        {
-                                            @item.Subscription.Price.ToString("c")
-                                        }
+                                     
                                         @if (@item.ShopItem != null)
                                         {
                                             @item.ShopItem.Price.ToString("c")

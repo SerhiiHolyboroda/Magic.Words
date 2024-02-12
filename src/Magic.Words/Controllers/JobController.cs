@@ -8,9 +8,22 @@ namespace Magic.Words.Web.Controllers {
     [ApiController]
     public class JobController : ControllerBase {
 
+
+        private readonly TestJobs _testJobs;
+        public JobController(TestJobs testJobs) {
+            _testJobs = testJobs;
+        }
         public ActionResult CreateBackhroundJob() {
             //  BackgroundJob.Enqueue( () => Console.WriteLine("Background Job Triggered"));
             BackgroundJob.Enqueue<TestJobs>(x => x.WriteLog("Background Job Triggered"));
+            return Ok();
+        }
+
+
+        [HttpPost]
+        [Route("CreateHourlyJobToCheckTopics")]
+        public ActionResult CreateHourlyJobToCheckTopics() {
+            RecurringJob.AddOrUpdate("HourlyTopicCheck", () => _testJobs.CheckAndSendEmailForNewTopics(), Cron.Hourly);
             return Ok();
         }
 

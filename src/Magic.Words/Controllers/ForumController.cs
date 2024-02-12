@@ -1,6 +1,8 @@
-﻿using Magic.Words.Core.Data;
+﻿using Hangfire;
+using Magic.Words.Core.Data;
 using Magic.Words.Core.Models;
 using Magic.Words.Core.Repositories;
+using Magic.Words.Infrastructure.Jobs;
 using Magic.Words.Shared.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,15 +23,17 @@ namespace Magic.Words.Web.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
-  
-        public ForumController(IUnitOfWork unitOfWork, IEmailSender emailSender, ILogger<ForumController> logger, ApplicationDbContext context, IHubContext<MyHub> hubContext) {
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly TestJobs _testJobs;
+        public ForumController(TestJobs testJobs, IHttpClientFactory httpClientFactory, IUnitOfWork unitOfWork, IEmailSender emailSender, ILogger<ForumController> logger, ApplicationDbContext context, IHubContext<MyHub> hubContext) {
             _hubContext = hubContext;
         
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
             _logger = logger;
             _context = context;
-         
+            _httpClientFactory = httpClientFactory;
+            _testJobs = testJobs; 
         }
         public async Task<IActionResult> Index()
         {
@@ -92,7 +96,9 @@ namespace Magic.Words.Web.Controllers
 
             _context.Comments.Add(comment);
             _context.SaveChanges();
-       //         await _hubContext.Clients.All.SendAsync("ReceiveComment", commentContent);
+                //         await _hubContext.Clients.All.SendAsync("ReceiveComment", commentContent);
+                RecurringJob.AddOrUpdate("HourlyTopicCheck", () => _testJobs.CheckAndSendEmailForNewTopics(), Cron.Hourly);
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -106,28 +112,64 @@ namespace Magic.Words.Web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateTopic(Topic topic)
-        {
-            if (ModelState.IsValid)
-            {
+        public async Task<IActionResult> CreateTopic(Topic topic) {
+            
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var user = _context.Users.Find(userId);
+
+                Topic topicc = new Topic
+                {
+                    Title = topic.Title,
+                    Content = topic.Content,
+                    CreatedAt = DateTime.Now,
+                    isActive = false,
+                    ApplicationUserId = userId
+                };
+
+                _context.Topics.Add(topicc);
+                await _context.SaveChangesAsync();
+
+                List<Topic> AA = new List<Topic>();
+                AA.Add(topicc);
+                // Assuming _testJobs.CheckAndSendEmailForNewTopics() returns a Task
+                RecurringJob.AddOrUpdate("HourlyTopicCheck", () => _testJobs.SendEmailToAdministrator(AA), Cron.Hourly);
+            RecurringJob.AddOrUpdate("HourlyTopicCheck", () => _testJobs.CheckAndSendEmailForNewTopics(), Cron.Hourly);
+
+            //гал  
 
 
-                topic.CreatedAt = DateTime.Now;
-                topic.isActive = true;
-                topic.ApplicationUserId = userId;
-                topic.ApplicationUser = (ApplicationUser)user;
 
-                _context.Topics.Add(topic);
-                _context.SaveChanges();
-
-                return RedirectToAction("Index");
-            }
-
+            return RedirectToAction("Index");
             // If the model state is not valid, return to the create topic view with errors
-            return View(topic);
+            //  return View(topic);
         }
+
+
+
+
+        /*
+        [HttpPost]
+        [Route("TestHourlyJob")]
+        public async Task<ActionResult> TestHourlyJob() {
+            var client = _httpClientFactory.CreateClient();
+
+            JobController.CreateHourlyJobToCheckTopics
+            var response = await client.PostAsync("http://localhost:7054/api/Job/CreateHourlyJobToCheckTopics", null);
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok("Hourly job scheduled successfully");
+            }
+            else
+            {
+                return StatusCode((int)response.StatusCode, "Failed to schedule hourly job");
+            }
+        }
+
+
+        */
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> 

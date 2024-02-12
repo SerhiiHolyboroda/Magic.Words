@@ -1,28 +1,23 @@
 ﻿using Magic.Words.Core.Models;
 using Magic.Words.Core.Repositories;
 using Magic.Words.Core.ViewModels;
-using Magic.Words.Shared;
 using Magic.Words.Shared.Hubs;
-using Microsoft.AspNetCore.Authorization;
+using Magic.Words.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Stripe;
-
 using Stripe.Checkout;
-using Stripe.Tax;
 using System.Security.Claims;
 
-namespace Magic.Words.Web.Controllers
-{
-    public class ShoppingCartController : Controller {
+namespace Magic.Words.Web.Controllers {
+    public class ShoppingCartItemController : Controller {
         //   [Area("customer")]
         //    [Authorize]
         private readonly IHubContext<ChatHub> _hubContext;
-        private readonly ILogger<ShoppingCartController> _logger;
+        private readonly ILogger<ShoppingCartItemController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }
-        public ShoppingCartController(ILogger<ShoppingCartController> logger, IUnitOfWork unitOfWork, IHubContext<ChatHub> hubContext) {
+        public ShoppingCartItemController(ILogger<ShoppingCartItemController> logger, IUnitOfWork unitOfWork, IHubContext<ChatHub> hubContext) {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _hubContext = hubContext;
@@ -35,7 +30,7 @@ namespace Magic.Words.Web.Controllers
 
             ShoppingCartVM = new()
             {
-                ShoppingCartList = _unitOfWork.ShoppingCartRepository.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Subscription"),
+                ShoppingCartList = _unitOfWork.ShoppingCartRepository.GetAll(u => u.ApplicationUserId == userId, includeProperties: "ShopItem"),
                 OrderHeader = new()
             };
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
@@ -54,12 +49,12 @@ namespace Magic.Words.Web.Controllers
 
             ShoppingCartVM = new()
             {
-                ShoppingCartList = _unitOfWork.ShoppingCartRepository.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Subscription"),
+                ShoppingCartList = _unitOfWork.ShoppingCartRepository.GetAll(u => u.ApplicationUserId == userId, includeProperties: "ShopItem"),
                 OrderHeader = new()
             };
             ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUserRepository.Get(u => u.Id == userId);
             ShoppingCartVM.OrderHeader.Email = ShoppingCartVM.OrderHeader.ApplicationUser.Email;
-          
+
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
                 double price = GetPriceBasedOnSomething(cart);
@@ -80,7 +75,7 @@ namespace Magic.Words.Web.Controllers
             //       includeProperties: "Subscription");
             ShoppingCartVM = new()
             {
-                ShoppingCartList = _unitOfWork.ShoppingCartRepository.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Subscription"),
+                ShoppingCartList = _unitOfWork.ShoppingCartRepository.GetAll(u => u.ApplicationUserId == userId, includeProperties: "ShopItem"),
                 OrderHeader = new()
             };
 
@@ -110,14 +105,16 @@ namespace Magic.Words.Web.Controllers
 
             _unitOfWork.OrderHeaderRepository.Add(ShoppingCartVM.OrderHeader);
             _unitOfWork.Save();
-            foreach (var cart in ShoppingCartVM.ShoppingCartList) {
-                OrderDetail orderDetail = new() {
-                    SubscriptionId = (int)cart.SubscriptionId,
+            foreach (var cart in ShoppingCartVM.ShoppingCartList)
+            {
+                OrderDetail orderDetail = new()
+                {
+                    ShopItemId = (int)cart.ShopItemId,
                     OrderHeaderId = ShoppingCartVM.OrderHeader.Id,
-                  //  Price = cart.Price,
-					Price =  ShoppingCartVM.OrderHeader.OrderTotal,
+                    //  Price = cart.Price,
+                    Price = ShoppingCartVM.OrderHeader.OrderTotal,
 
-					Count = cart.Count
+                    Count = cart.Count
                 };
                 _unitOfWork.OrderDetailRepository.Add(orderDetail);
                 _unitOfWork.Save();
@@ -130,7 +127,7 @@ namespace Magic.Words.Web.Controllers
             var domain = "https://localhost:7054/";
             var options = new SessionCreateOptions
             {
-             //   SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
+                //   SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
                 SuccessUrl = domain + $"ShoppingCart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
                 CancelUrl = domain + "customer/cart/index",
                 LineItems = new List<SessionLineItemOptions>(),
@@ -146,42 +143,42 @@ namespace Magic.Words.Web.Controllers
                     PriceData = new SessionLineItemPriceDataOptions
                     {
 
-						// UnitAmount = (long)(item.Price * 100)
-						UnitAmount = (long)(ShoppingCartVM.OrderHeader.OrderTotal * 100),
-						Currency = "usd",
+                        // UnitAmount = (long)(item.Price * 100)
+                        UnitAmount = (long)(ShoppingCartVM.OrderHeader.OrderTotal * 100),
+                        Currency = "usd",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = item.Subscription.Name
+                            Name = item.ShopItem.Name
                         }
                     },
                     Quantity = item.Count
                 };
                 options.LineItems.Add(sessionLineItem);
-            
 
-            var service = new SessionService();
-            Session session = service.Create(options);
-            _unitOfWork.OrderHeaderRepository.UpdateStripePaymentId(ShoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
-            _unitOfWork.Save();
-            Response.Headers.Add("Location", session.Url);
-            return new StatusCodeResult(303);
-        } 
+
+                var service = new SessionService();
+                Session session = service.Create(options);
+                _unitOfWork.OrderHeaderRepository.UpdateStripePaymentId(ShoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
+                _unitOfWork.Save();
+                Response.Headers.Add("Location", session.Url);
+                return new StatusCodeResult(303);
+            }
             //  return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderHeader.Id });
             return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderHeader.Id });
         }
 
         public IActionResult OrderConfirmation(int id) {
 
-            
-            OrderHeader orderHeader = _unitOfWork.OrderHeaderRepository.Get(u => u.Id == id, includeProperties: "ApplicationUser");   
+
+            OrderHeader orderHeader = _unitOfWork.OrderHeaderRepository.Get(u => u.Id == id, includeProperties: "ApplicationUser");
             if (orderHeader.PaymentStatus != SD.PaymentApprovedForDelayedPayment)
             {
-                var service =  new SessionService();
+                var service = new SessionService();
                 Session session = service.Get(orderHeader.SessionId);
-                if(session.PaymentStatus.ToLower() == "paid")
+                if (session.PaymentStatus.ToLower() == "paid")
                 {
                     _unitOfWork.OrderHeaderRepository.UpdateStripePaymentId(id, session.Id, session.PaymentIntentId);
-                    _unitOfWork.OrderHeaderRepository.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved );
+                    _unitOfWork.OrderHeaderRepository.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
 
@@ -190,12 +187,12 @@ namespace Magic.Words.Web.Controllers
                 _unitOfWork.ShoppingCartRepository.RemoveRange(shoppingCarts);
                 _unitOfWork.Save();
             }
-             
+
             return View(id);
         }
 
 
-		public async Task<IActionResult> Plus(int cartId) {
+        public async Task<IActionResult> Plus(int cartId) {
 
             var userId = "UserIdHere"; // Replace with the actual user ID
             await _hubContext.Clients.User(userId).SendAsync("ReceiveMessage", "Button pressed!");
@@ -232,14 +229,12 @@ namespace Magic.Words.Web.Controllers
         private double GetPriceBasedOnSomething(ShoppingCart shoppingCart) {
             if (shoppingCart.Count < 50)
             {
-                if (shoppingCart.SubscriptionId != null)
-                {
-                    return (double)shoppingCart.Subscription.Price;
-                }else if (shoppingCart.ShopItemId != null)
+              
+               if (shoppingCart.ShopItemId != null)
                 {
                     return (double)5.0m;
                 }
-                
+
                 //change price
 
             }
@@ -247,26 +242,24 @@ namespace Magic.Words.Web.Controllers
             {
                 if (shoppingCart.Count <= 100)
                 {
-                    return (double)shoppingCart.Subscription.Price;
+                    return (double)shoppingCart.ShopItem.Price;
                     //change price
                 }
             }
-            return (double)shoppingCart.Subscription.Price;
+            return (double)shoppingCart.ShopItem.Price;
         }
 
 
         [HttpPost]
-     //   [Authorize]
-        public IActionResult AddToCart(ShoppingCart shoppingCart, int? subscriptionId , int? shopItemId) {
+        //   [Authorize]
+        public IActionResult AddToCart(ShoppingCart shoppingCart, int shopItemId) {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             shoppingCart.ApplicationUserId = userId;
+
             
-            if (subscriptionId != null)
-            {
-                shoppingCart.SubscriptionId = subscriptionId;
-            }
-            else if (shopItemId != null)
+           
+         if (shopItemId != null)
             {
                 shoppingCart.ShopItemId = shopItemId;
             }

@@ -17,9 +17,21 @@
             <label for="Content">Content:</label>
             <textarea id="Content" name="Content" required></textarea>
         </div>
+      
+
+
+    </form>
+    <form asp-controller="Forum" asp-action="CreateTopic" method="post">
+        <div>
+            <label for="Title">Title:</label>
+            <input type="text" id="Title" name="Title" required />
+        </div>
+        <div>
+            <label for="Content">Content:</label>
+            <textarea id="Content" name="Content" required></textarea>
+        </div>
         <button type="submit">Create Topic</button>
     </form>
-    
     <a asp-controller="Forum" asp-action="Index">Back to Forum</a>
 </body>
 </html>

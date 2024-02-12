@@ -16,6 +16,8 @@ namespace Magic.Words.Core.Models {
         [Required]
         public string ApplicationUserId { get; set; }
 
+     //   public string ApplicationUserName { get; set; }
+
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }
 

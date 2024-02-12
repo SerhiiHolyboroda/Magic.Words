@@ -4,6 +4,7 @@ using Magic.Words.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Magic.Words.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240211164231_AA33")]
+    partial class AA33
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +64,7 @@ namespace Magic.Words.Infrastructure.Migrations
                             CommentId = 1,
                             ApplicationUserId = "user2",
                             Content = "Comment 1 for Topic 1",
-                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6548),
+                            CreatedAt = new DateTime(2024, 2, 11, 18, 42, 29, 942, DateTimeKind.Local).AddTicks(4454),
                             TopicId = 1,
                             isActive = true
                         },
@@ -70,7 +73,7 @@ namespace Magic.Words.Infrastructure.Migrations
                             CommentId = 2,
                             ApplicationUserId = "user1",
                             Content = "Comment 2 for Topic 1",
-                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6553),
+                            CreatedAt = new DateTime(2024, 2, 11, 18, 42, 29, 942, DateTimeKind.Local).AddTicks(4459),
                             TopicId = 1,
                             isActive = true
                         },
@@ -79,7 +82,7 @@ namespace Magic.Words.Infrastructure.Migrations
                             CommentId = 3,
                             ApplicationUserId = "user2",
                             Content = "Comment 1 for Topic 2",
-                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6556),
+                            CreatedAt = new DateTime(2024, 2, 11, 18, 42, 29, 942, DateTimeKind.Local).AddTicks(4462),
                             TopicId = 2,
                             isActive = true
                         });
@@ -102,17 +105,12 @@ namespace Magic.Words.Infrastructure.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int?>("ShopItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SubscriptionId")
+                    b.Property<int>("SubscriptionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderHeaderId");
-
-                    b.HasIndex("ShopItemId");
 
                     b.HasIndex("SubscriptionId");
 
@@ -407,7 +405,7 @@ namespace Magic.Words.Infrastructure.Migrations
                             TopicId = 1,
                             ApplicationUserId = "user1",
                             Content = "Content for Topic 1",
-                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6447),
+                            CreatedAt = new DateTime(2024, 2, 11, 18, 42, 29, 942, DateTimeKind.Local).AddTicks(4366),
                             Title = "Topic 1",
                             isActive = true
                         },
@@ -416,7 +414,7 @@ namespace Magic.Words.Infrastructure.Migrations
                             TopicId = 2,
                             ApplicationUserId = "user2",
                             Content = "Content for Topic 2",
-                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6506),
+                            CreatedAt = new DateTime(2024, 2, 11, 18, 42, 29, 942, DateTimeKind.Local).AddTicks(4415),
                             Title = "Topic 2",
                             isActive = true
                         },
@@ -425,7 +423,7 @@ namespace Magic.Words.Infrastructure.Migrations
                             TopicId = 3,
                             ApplicationUserId = "user1",
                             Content = "Content for Topic 3",
-                            CreatedAt = new DateTime(2024, 2, 11, 23, 12, 26, 486, DateTimeKind.Local).AddTicks(6509),
+                            CreatedAt = new DateTime(2024, 2, 11, 18, 42, 29, 942, DateTimeKind.Local).AddTicks(4418),
                             Title = "Topic 3",
                             isActive = true
                         });
@@ -649,7 +647,7 @@ namespace Magic.Words.Infrastructure.Migrations
                         {
                             Id = "user1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c302529d-2825-4e8e-a38d-de508581c06f",
+                            ConcurrencyStamp = "c6848a5c-602e-4eb4-b4b3-fda9782e917a",
                             Email = "user1@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -657,7 +655,7 @@ namespace Magic.Words.Infrastructure.Migrations
                             NormalizedUserName = "USER1@EXAMPLE.COM",
                             PasswordHash = "DFADAS!@#@#@!",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6823661e-062f-4a40-bccd-573f638ef44d",
+                            SecurityStamp = "cfcb55a7-81ff-433c-8394-c85e826598aa",
                             TwoFactorEnabled = false,
                             UserName = "user1@example.com"
                         },
@@ -665,7 +663,7 @@ namespace Magic.Words.Infrastructure.Migrations
                         {
                             Id = "user2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e0f9e681-e727-4692-befc-32fc7fb021b7",
+                            ConcurrencyStamp = "ecd82e10-3195-40c0-b784-1ad8b51c53d8",
                             Email = "user2@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -673,7 +671,7 @@ namespace Magic.Words.Infrastructure.Migrations
                             NormalizedUserName = "USER2@EXAMPLE.COM",
                             PasswordHash = "ADsaD@!dsadsa",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "72e4ce96-f897-4e8c-986c-bbc53f902497",
+                            SecurityStamp = "6381a779-148d-4c0a-aa57-708aeef5f519",
                             TwoFactorEnabled = false,
                             UserName = "user2@example.com"
                         });
@@ -704,17 +702,13 @@ namespace Magic.Words.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Magic.Words.Core.Models.ShopItem", "ShopItem")
-                        .WithMany()
-                        .HasForeignKey("ShopItemId");
-
                     b.HasOne("Magic.Words.Core.Models.Subscription", "Subscription")
                         .WithMany()
-                        .HasForeignKey("SubscriptionId");
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OrderHeader");
-
-                    b.Navigation("ShopItem");
 
                     b.Navigation("Subscription");
                 });

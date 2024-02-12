@@ -17,7 +17,24 @@ namespace Magic.Words.Web.Controllers {
             List<ShopItem> objSubscriptionList = _unitOfWork.ShopItemRepository.GetAll().ToList();
             return View(objSubscriptionList);
         }
-         
 
+        public IActionResult Details(int shopItemId) {
+             
+            {
+
+                ShopItem shopItem = _unitOfWork.ShopItemRepository.Get(
+                    u => u.ShopItemId == shopItemId
+                ); 
+
+                ShoppingCart cart = new ShoppingCart
+                {
+                    ShopItem = shopItem,
+                    Count = 1,
+                    ShopItemId = shopItemId
+                };
+
+                return View(cart);
+            }
+        }
     }
 }

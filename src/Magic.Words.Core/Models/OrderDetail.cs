@@ -15,13 +15,18 @@ namespace Magic.Words.Core.Models {
         [ForeignKey("OrderHeaderId")]
         [ValidateNever]
         public OrderHeader OrderHeader { get; set; }
-        [Required]
-        public int SubscriptionId { get; set; }
+         
+        public int? SubscriptionId { get; set; }
         [ForeignKey("SubscriptionId")]
         [ValidateNever]
-        public Subscription Subscription { get; set; }
+        public Subscription? Subscription { get; set; }
+
+        public int? ShopItemId { get; set; }
+        [ForeignKey("ShopItemId")]
+        [ValidateNever]
+        public ShopItem? ShopItem { get; set; }
         public int Count { get; set; }
         public double Price { get; set; }
-
+      
     }
 }
